@@ -29,9 +29,10 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return &Config{
-		App: loadApplicationConfig(),
-		DB:  loadDatabaseConfig(),
-		Aws: loadAwsConfig(),
+		App:    loadApplicationConfig(),
+		DB:     loadDatabaseConfig(),
+		Aws:    loadAwsConfig(),
+		JwtKey: os.Getenv("JWT_KEY"),
 	}, nil
 }
 

@@ -12,6 +12,8 @@ import (
 type AuthHandler interface {
 	RegisterEmail(ginCtx *gin.Context)
 	RegisterPhone(ginCtx *gin.Context)
+	LoginEmail(ginCtx *gin.Context)
+	LoginPhone(ginCtx *gin.Context)
 }
 
 type authHandler struct {
@@ -55,6 +57,42 @@ func (r *authHandler) RegisterPhone(ginCtx *gin.Context) {
 	}
 
 	ginCtx.JSON(http.StatusCreated, &dto.AuthResponsePhone{
+		Phone: authResponse.Phone,
+		Token: authResponse.Token,
+	})
+}
+
+func (r *authHandler) LoginEmail(ginCtx *gin.Context) {
+	var authRequest dto.AuthRequest
+	if err := ginCtx.BindJSON(&authRequest); err != nil {
+		ginCtx.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
+		return
+	}
+
+	authResponse, err := r.authUseCase.Login(ginCtx.Request.Context(), &authRequest, false)
+	if err != nil {
+		ginCtx.JSON(exceptions.MapToHttpStatusCode(err), gin.H{"error": err.Error()})
+		return
+	}
+	ginCtx.JSON(http.StatusOK, &dto.AuthResponseEmail{
+		Email: authResponse.Email,
+		Token: authResponse.Token,
+	})
+}
+
+func (r *authHandler) LoginPhone(ginCtx *gin.Context) {
+	var authRequest dto.AuthRequest
+	if err := ginCtx.BindJSON(&authRequest); err != nil {
+		ginCtx.JSON(http.StatusBadRequest, gin.H{"error": "invalid input"})
+		return
+	}
+
+	authResponse, err := r.authUseCase.Login(ginCtx.Request.Context(), &authRequest, true)
+	if err != nil {
+		ginCtx.JSON(exceptions.MapToHttpStatusCode(err), gin.H{"error": err.Error()})
+		return
+	}
+	ginCtx.JSON(http.StatusOK, &dto.AuthResponsePhone{
 		Phone: authResponse.Phone,
 		Token: authResponse.Token,
 	})

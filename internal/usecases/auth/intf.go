@@ -8,4 +8,5 @@ import (
 
 type UseCase interface {
 	Register(context.Context, *dto.AuthRequest, bool) (*dto.AuthResponse, error)
+	Login(context.Context, *dto.AuthRequest, bool) (*dto.AuthResponse, error)
 }

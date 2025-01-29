@@ -72,3 +72,11 @@ func (d *AuthRequest) HashPassword() error {
 
 	return nil
 }
+
+func (d *AuthRequest) ComparePassword(password string) error {
+	errCompare := bcrypt.CompareHashAndPassword([]byte(password), []byte(d.Password))
+	if errCompare != nil {
+		return errors.New("password or username is wrong")
+	}
+	return nil
+}

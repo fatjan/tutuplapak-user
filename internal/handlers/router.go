@@ -24,4 +24,6 @@ func SetupRouter(cfg *config.Config, db *sqlx.DB, r *gin.Engine) {
 	authRouter := v1.Group("")
 	authRouter.POST("/register/email", authHandler.RegisterEmail)
 	authRouter.POST("/register/phone", authHandler.RegisterPhone)
+	authRouter.POST("/login/email", authHandler.LoginEmail)
+	authRouter.POST("/login/phone", authHandler.LoginPhone)
 }

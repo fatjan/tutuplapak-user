@@ -2,6 +2,8 @@ package auth
 
 import (
 	"context"
+	"database/sql"
+	"fmt"
 	"time"
 
 	"github.com/fatjan/tutuplapak/internal/models"
@@ -72,4 +74,40 @@ func (r *repository) PostPhone(ctx context.Context, user *models.User) (int, err
 	}
 
 	return newID, nil
+}
+
+func (r *repository) FindByEmail(ctx context.Context, email string) (*models.User, error) {
+	user := &models.User{}
+
+	err := r.db.QueryRowContext(ctx,
+		"SELECT id, email, password FROM users WHERE email = $1",
+		email,
+	).Scan(&user.ID, &user.Email, &user.Password)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to find user by email: %w", err)
+	}
+
+	return user, nil
+}
+
+func (r *repository) FindByPhone(ctx context.Context, email string) (*models.User, error) {
+	user := &models.User{}
+
+	err := r.db.QueryRowContext(ctx,
+		"SELECT id, phone, password FROM users WHERE phone = $1",
+		email,
+	).Scan(&user.ID, &user.Phone, &user.Password)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to find user by phone: %w", err)
+	}
+
+	return user, nil
 }
