@@ -2,8 +2,8 @@
 -- +goose StatementBegin
 create table if not exists users (
     id serial primary key,
-    email varchar(60) unique not null,
-    phone varchar(20) not null,
+    email varchar(60) unique,
+    phone varchar(20) unique,
     password text not null,
     file_id int,
     file_url text,
