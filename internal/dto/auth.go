@@ -20,6 +20,16 @@ type AuthResponse struct {
 	Token string `json:"token"`
 }
 
+type AuthResponsePhone struct {
+	Phone string `json:"phone"`
+	Token string `json:"token"`
+}
+
+type AuthResponseEmail struct {
+	Email string `json:"email"`
+	Token string `json:"token"`
+}
+
 func (d *AuthRequest) ValidatePayloadAuth(isPhoneRegister bool) error {
 	if d.Password == "" || !isValidPasswordLength(d.Password, 8, 32) {
 		return exceptions.ErrorBadRequest

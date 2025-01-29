@@ -23,7 +23,7 @@ func (r *repository) PostEmail(ctx context.Context, user *models.User) (int, err
 	now := time.Now()
 
 	query := `
-			INSERT INTO users (email, password_hash, created_at, updated_at)
+			INSERT INTO users (email, password, created_at, updated_at)
 			VALUES ($1, $2, $3, $4)
 			RETURNING id`
 
@@ -51,7 +51,7 @@ func (r *repository) PostPhone(ctx context.Context, user *models.User) (int, err
 	now := time.Now()
 
 	query := `
-			INSERT INTO users (phone, password_hash, created_at, updated_at)
+			INSERT INTO users (phone, password, created_at, updated_at)
 			VALUES ($1, $2, $3, $4)
 			RETURNING id`
 

@@ -35,7 +35,10 @@ func (r *authHandler) RegisterEmail(ginCtx *gin.Context) {
 		return
 	}
 
-	ginCtx.JSON(http.StatusCreated, authResponse)
+	ginCtx.JSON(http.StatusCreated, &dto.AuthResponseEmail{
+		Email: authResponse.Email,
+		Token: authResponse.Token,
+	})
 }
 
 func (r *authHandler) RegisterPhone(ginCtx *gin.Context) {
@@ -51,5 +54,8 @@ func (r *authHandler) RegisterPhone(ginCtx *gin.Context) {
 		return
 	}
 
-	ginCtx.JSON(http.StatusCreated, authResponse)
+	ginCtx.JSON(http.StatusCreated, &dto.AuthResponsePhone{
+		Phone: authResponse.Phone,
+		Token: authResponse.Token,
+	})
 }
